@@ -8,6 +8,7 @@ import 'models/movie_response.dart';
 import 'package:auth_request/api_key.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:google_fonts/google_fonts.dart';
 
 Future<List<Movie>> fetchMovies(http.Client client) async {
   final response = await client
@@ -15,7 +16,7 @@ Future<List<Movie>> fetchMovies(http.Client client) async {
 
     // Use the compute funtion to run fetchMovies in a separate isolate
     return compute(parseMovies, response.body);
-}
+} 
 // A function that converts a response body into a List<Movie>.
 List<Movie> parseMovies(String responseBody) {
   // decode json from trending data
@@ -46,6 +47,11 @@ class MovieAppState extends State<MovieApp> {
       title: 'MovieDB List',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context).textTheme,
+        ),
+        scaffoldBackgroundColor: Colors.purple[200],
+         
       ),
       home: Scaffold(
         appBar: AppBar(
@@ -84,7 +90,7 @@ class MoviesList extends StatelessWidget {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        crossAxisSpacing: 20,
+        crossAxisSpacing: 100,
         mainAxisSpacing: 40,
 
       ), 
@@ -116,51 +122,22 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(25),
-      child: Image.network(
-        'https://image.tmdb.org/t/p/original/${movies[index].poster_path}',
-        fit: BoxFit.fitWidth,   //   frameBuilder: (context, child, frame, wasSynchronouslyLoaded) => Padding(padding: EdgeInsets.all(4)) ,
-      ),
+    return Stack(
+      children: [ Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFFECEFF1),
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+            image: NetworkImage('https://image.tmdb.org/t/p/w500${movies.poster_path}'),
+            fit: BoxFit.fitHeight,
+          ),
+          border: Border.all(
+            color: Colors.black,
+            width: 2,
+          ),
+        ), 
+        ),
+      ]
     );
   }
-}
-                
-                // Card(
-                //   child: Column(
-                //     children: [
-                //       FittedBox(
-                //         child: Image.network('https://image.tmdb.org/t/p/original/$image',
-                //         fit: BoxFit.cover, 
-                //         height: 200,
-                //         width: 100,)
-                //         ),
-                //       Text(snapshot.data!.original_title),
-                //       Text(snapshot.data!.release_date),
-                //       Positioned(
-                //     bottom: 100,
-                //     left: 100,
-                //     right: 100,
-                //     child: Text(
-                //       snapshot.data!.original_title,
-                //     )
-                //   )
-                //     ],
-                //   ), 
-                // );
-
-                // card widget end
-
-                // Image.network('https://image.tmdb.org/t/p/original/$image'); 
-                // return Text(snapshot.data!.overview);
-//               }
-
-              // By default, show a loading spinner.
-//               return const CircularProgressIndicator();
-//             },
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+} 
