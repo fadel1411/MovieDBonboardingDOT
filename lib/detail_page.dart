@@ -1,11 +1,11 @@
 import 'dart:convert';
-
-import 'package:auth_request/models/movie_response.dart';
+ 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'api_key.dart'; 
+import 'api_key.dart';
+import 'models/movie.dart'; 
 class DetailPage extends StatelessWidget {
   final Movie? movies;
   
@@ -22,6 +22,7 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(movies?.original_title ?? ""),
       ),
       body: SingleChildScrollView(
