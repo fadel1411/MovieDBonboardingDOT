@@ -8,5 +8,9 @@ abstract class MovieEvent extends Equatable {
 }
 
 
-class MovieFetched extends MovieEvent {}
+class MovieFetched extends MovieEvent {
+ //hive flutter changenotifier 
+}
+ 
 
+ 
