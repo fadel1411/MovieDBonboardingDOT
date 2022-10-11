@@ -3,7 +3,8 @@
 import 'dart:convert';
 import 'dart:developer' as developer;
 
-import 'package:auth_request/models/movie_model.dart';
+import 'models/movie_model.dart';
+
  
 
 void main() {

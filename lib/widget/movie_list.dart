@@ -5,11 +5,11 @@ import 'package:auth_request/widget/movie_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
 import '../models/movie.dart';
 import 'bottom_loader.dart';
-
 
 final log = Logger('ExampleLogger');
 
@@ -34,52 +34,53 @@ class _MovieListState extends State<MovieList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MovieBloc, MovieState>(
-      builder: (context, state) {
-        switch (state.status) {
-          case MovieStatus.failure:
-            return const Center(child: Text('failed to fetch movies'));
-          case MovieStatus.success:
-            if (state.movies.isEmpty) {
-              return const Center(child: Text('no movies'));
-            }
-            return GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20,
-            ),
-              itemBuilder: (BuildContext context, int index) {
-                return index >= state.movies.length 
-                ? const  BottomLoader()
-                : InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => 
-                        DetailPage(movies: state.movies[index]),
-                      ),
-                    );
-                  },
-                  child: MovieCard(
-                    movies: state.movies,
-                    index: index,
-                  )
-                  );
-              },
-              itemCount: state.hasReachedMax
-                  ? state.movies.length
-                  : state.movies.length + 1,
-              controller: _scrollController,
-            );
-          case MovieStatus.initial:
-            return const Center(child: CircularProgressIndicator());
-        }
-      },
+    return  BlocProvider(
+      create: (context) => MovieBloc(httpClient: Client())..add(MovieFetched()),
+      child: BlocBuilder<MovieBloc, MovieState>(
+        builder: (context, state) {
+          switch (state.status) {
+            case MovieStatus.failure:
+              return const Center(child: Text('failed to fetch movies'));
+            case MovieStatus.success:
+              if (state.movies.isEmpty) {
+                return const Center(child: Text('no movies'));
+              }
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return index >= state.movies.length
+                      ? const BottomLoader()
+                      : InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailPage(movies: state.movies[index]),
+                              ),
+                            );
+                          },
+                          child: MovieCard(
+                            movies: state.movies,
+                            index: index,
+                          ));
+                },
+                itemCount: state.hasReachedMax
+                    ? state.movies.length
+                    : state.movies.length + 1,
+                controller: _scrollController,
+              );
+            case MovieStatus.initial:
+              return const Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
-  
 
   // @override
   // void dispose() {
@@ -90,7 +91,7 @@ class _MovieListState extends State<MovieList> {
   // }
 
   void _onScroll() {
-    if (_isBottom) context.read<MovieBloc>().add(MovieFetched());
+    if (_isBottom) context.read<MovieBloc>();
   }
 
   bool get _isBottom {

@@ -1,11 +1,8 @@
  import 'dart:convert';
-import 'dart:io';
 
-import 'package:auth_request/models/movie_model.dart';
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -22,6 +19,7 @@ final log = Logger('MyClassName');
 List _movieList = <Movie>[];
 List get movieList => _movieList;
 
+ // ignore: todo
  //TODO: find moie limit previous i mplementation
 const _movieLimit = 20;
 const throttleDuration = Duration(milliseconds: 100);
@@ -58,6 +56,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
         hasReachedMax: false,
       ));
     }  catch (e) {
+      // ignore: avoid_print
       print("error movie _list: $e");
       return emit(state.copyWith(status: MovieStatus.failure ), );
     }
