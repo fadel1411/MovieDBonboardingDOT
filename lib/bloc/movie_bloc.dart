@@ -1,9 +1,13 @@
  import 'dart:convert';
+import 'dart:io';
 
+import 'package:auth_request/models/movie_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
@@ -13,7 +17,12 @@ import '../models/movie.dart';
 
 part 'movie_event.dart';
 part 'movie_state.dart';
- 
+
+final log = Logger('MyClassName');
+List _movieList = <Movie>[];
+List get movieList => _movieList;
+
+ //TODO: find moie limit previous i mplementation
 const _movieLimit = 20;
 const throttleDuration = Duration(milliseconds: 100);
 
@@ -22,8 +31,6 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
     return droppable<E>().call(events.throttleTime(duration), mapper);
   };
 }
-
-
 class MovieBloc extends Bloc<MovieEvent, MovieState> {
     MovieBloc({required this.httpClient}) : super(const MovieState()) {
       on <MovieFetched>(
@@ -34,14 +41,14 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   Future<void> _onMovieFetched(MovieFetched event, Emitter<MovieState> emit) async {
     try {
       if (state.status == MovieStatus.initial) {
-        final movies = await _fetchMovies(1);
+        final movies = await _fetchMovies();
         return emit(state.copyWith(
           status: MovieStatus.success,
           movies: movies,
           hasReachedMax: false,
         ));
       }
-      final movies = await _fetchMovies(state.movies.length ~/ 20 + 1);
+      final movies = await _fetchMovies();
       if (movies.isEmpty) {
         return emit(state.copyWith(hasReachedMax: true));
       }
@@ -50,28 +57,26 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
         movies: List.of(state.movies)..addAll(movies),
         hasReachedMax: false,
       ));
-    } catch (_) {
-      return emit(state.copyWith(status: MovieStatus.failure));
+    }  catch (e) {
+      print("error movie _list: $e");
+      return emit(state.copyWith(status: MovieStatus.failure ), );
     }
   }
-  
       /// register on<MovieFetched> event
-      Future<List<Movie>> _fetchMovies([int startIndex = 0]) async {
+      Future<List<Movie>> _fetchMovies( ) async {
     final response = await httpClient.get(Uri.parse(
         'https://api.themoviedb.org/3/trending/movie/week?api_key=$apiKey'));
 
+    // final box = await Hive.openBox<MovieModel>('movie');
+    // _movieList = box.values.toList(); 
     // Use the compute funtion to run fetchMovies in a separate isolate
-    return compute(parseMovies, response.body);
-    
+    return parseMovies(response.body); 
     }
-
 // A function that converts a response body into a List<Movie>.
     List<Movie> parseMovies(String responseBody) {
       // decode json from trending data
       final parsed = jsonDecode(responseBody)['results'];
-
       return parsed.map<Movie>((json) => Movie.fromJson(json)).toList();
     }
-    
     final http.Client httpClient;
   }

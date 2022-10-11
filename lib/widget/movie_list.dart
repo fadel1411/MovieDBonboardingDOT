@@ -1,11 +1,17 @@
 import 'package:auth_request/bloc/movie_bloc.dart';
 import 'package:auth_request/detail_page.dart';
+import 'package:auth_request/models/movie_model.dart';
 import 'package:auth_request/widget/movie_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:logging/logging.dart';
 
 import '../models/movie.dart';
 import 'bottom_loader.dart';
+
+
+final log = Logger('ExampleLogger');
 
 class MovieList extends StatefulWidget {
   const MovieList({super.key, required this.movies});
@@ -16,12 +22,14 @@ class MovieList extends StatefulWidget {
 }
 
 class _MovieListState extends State<MovieList> {
+  
   final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    
   }
 
   @override
@@ -73,13 +81,13 @@ class _MovieListState extends State<MovieList> {
   }
   
 
-  @override
-  void dispose() {
-    _scrollController
-      ..removeListener(_onScroll)
-      ..dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _scrollController
+  //     ..removeListener(_onScroll)
+  //     ..dispose();
+  //   super.dispose();
+  // }
 
   void _onScroll() {
     if (_isBottom) context.read<MovieBloc>().add(MovieFetched());
@@ -91,4 +99,4 @@ class _MovieListState extends State<MovieList> {
     final currentScroll = _scrollController.offset;
     return currentScroll >= (maxScroll * 0.9);
   }
-}
+} 

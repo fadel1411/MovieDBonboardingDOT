@@ -1,30 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'adapter_movie.dart';
+part of 'movie_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MovieAdapterAdapter extends TypeAdapter<MovieAdapter> {
+class MovieModelAdapter extends TypeAdapter<MovieModel> {
   @override
   final int typeId = 1;
 
   @override
-  MovieAdapter read(BinaryReader reader) {
+  MovieModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MovieAdapter()
-      ..original_title = fields[0] as String
-      ..overview = fields[1] as String
-      ..poster_path = fields[2] as String
-      ..release_date = fields[3] as String;
+    return MovieModel(
+        fields[0] as String,
+        fields[1] as String,
+        fields[3] as String,
+        fields[2] as String,
+    );
+      // ..original_title = fields[0] as String
+      // ..overview = fields[1] as String
+      // ..poster_path = fields[2] as String
+      // ..release_date = fields[3] as String;
   }
 
   @override
-  void write(BinaryWriter writer, MovieAdapter obj) {
+  void write(BinaryWriter writer, MovieModel obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -43,7 +48,7 @@ class MovieAdapterAdapter extends TypeAdapter<MovieAdapter> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MovieAdapterAdapter &&
+      other is MovieModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

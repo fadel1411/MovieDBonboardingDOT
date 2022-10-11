@@ -18,7 +18,7 @@ class MovieState extends Equatable {
     List<Movie>? movies,
     bool? hasReachedMax,
   }) {
-    return MovieState(
+    return MovieState(  
       status: status ?? this.status,
       movies: movies ?? this.movies,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,

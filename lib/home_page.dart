@@ -13,7 +13,9 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('List of Movie')),
       body: BlocProvider(
-        create: (_) => MovieBloc(httpClient: http.Client())..add(MovieFetched()),
+        create: (context) => MovieBloc(httpClient: http.Client())
+          ..add(MovieFetched()),
+        // mungkin array
         child: const MovieList(movies: [],),
       ),
     );

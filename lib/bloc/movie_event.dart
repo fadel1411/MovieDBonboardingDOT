@@ -8,5 +8,15 @@ abstract class MovieEvent extends Equatable {
 }
 
 
-class MovieFetched extends MovieEvent {}
+class MovieFetched extends MovieEvent {
+ //hive flutter changenotifier
+  // addItem(MovieModel item) async {
+  //   var box = await Hive.openBox<MovieModel>('movie');
 
+  //   box.add(item);
+ 
+  // }
+}
+ 
+
+ 

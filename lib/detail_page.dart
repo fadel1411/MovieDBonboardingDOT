@@ -7,16 +7,11 @@ import 'package:http/http.dart' as http;
 import 'api_key.dart';
 import 'models/movie.dart'; 
 class DetailPage extends StatelessWidget {
-  final Movie? movies;
-  
+  final Movie? movies; 
   const DetailPage({
     Key? key, 
     this.movies, 
-    }) : super(key: key);
-       
-       
-
-       
+    }) : super(key: key);     
   // final List<Movie> movie_detail;
   @override
   Widget build(BuildContext context) {
@@ -39,8 +34,7 @@ class DetailPage extends StatelessWidget {
                 fit: BoxFit.fitWidth,
                 ),
               ),
-            ),
-            
+            ), 
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: Text(movies!.original_title, style: const TextStyle(
@@ -72,15 +66,14 @@ class DetailPage extends StatelessWidget {
              
               ],
               ),  
-            ),
-              ),
-        
+          ),
+      ), 
     );
   }
 }
 Future<List<Movie>> fetchmovie_detailDetail(http.Client client) async {                 
   final response = await client
-      .get(Uri.parse('https://api.themoviedb.org/3/movies/550?api_key=$apiKey'),); 
+      .get(Uri.parse('https://api.themoviedb.org/3/trending/movie/week?api_key=$apiKey'),); 
 
     // Use the compute funtion to run fetchmovie_detail in a separate isolate
     return compute(parsemovie, response.body);
