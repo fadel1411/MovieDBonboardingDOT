@@ -58,11 +58,11 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     }  catch (e) {
       // ignore: avoid_print
       print("error movie _list: $e");
-      return emit(state.copyWith(status: MovieStatus.failure ), );
+      return emit(state.copyWith(status: MovieStatus.failure), );
     }
   }
       /// register on<MovieFetched> event
-      Future<List<Movie>> _fetchMovies( ) async {
+      Future<List<Movie>> _fetchMovies() async {
     final response = await httpClient.get(Uri.parse(
         'https://api.themoviedb.org/3/trending/movie/week?api_key=$apiKey'));
 

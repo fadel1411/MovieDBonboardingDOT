@@ -8,13 +8,16 @@ import 'models/movie_model.dart';
 
 Future<void> main() async {  
   
-  // pathProvider.getApplicationDocumentsDirectory();
-  // WidgetsFlutterBinding.ensureInitialized();
+  pathProvider.getApplicationDocumentsDirectory();
+  WidgetsFlutterBinding.ensureInitialized();
   // await Hive.initFlutter();
 
   // // register adapter 
+  await Hive.initFlutter();
   Hive.registerAdapter(MovieModelAdapter());
-  var box = await Hive.box('movie');
+  var box = await Hive.openBox('movie');
+
+  
 
   Bloc.observer = SimpleBlocObserver();
   runApp(const App());
