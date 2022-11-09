@@ -132,18 +132,15 @@ class DetailPage extends StatelessWidget {
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16),
+                            ),  
+                            ElevatedButton( 
+                                style: ButtonStyle( 
+                                    backgroundColor: MaterialStateProperty.resolveWith(getColor)
+                                  ),
+                                onPressed: () { 
+                              }, child:  const Text("Buy Now", style: TextStyle(color: Colors.black),)
                             ), 
-
-                              Center(
-                                child: ElevatedButton( 
-                                  style: ButtonStyle( 
-                                      backgroundColor: MaterialStateProperty.resolveWith(getColor)
-                                    ),
-                                  onPressed: () { 
-                                }, child:  const Text("Buy Now")
-                                ),
-                              ),  
-                            ],                  
+                        ],                  
                       ),
                     ),  
                   ],
