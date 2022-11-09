@@ -48,7 +48,7 @@ class _MovieListState extends State<MovieList> {
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 20,
+                  crossAxisSpacing: 18,
                   mainAxisSpacing: 20,
                 ),
                 itemBuilder: (BuildContext context, int index) {

@@ -20,8 +20,7 @@ List _movieList = <Movie>[];
 List get movieList => _movieList;
 
  // ignore: todo
- //TODO: find moie limit previous i mplementation
-const _movieLimit = 20;
+ //TODO: find moie limit previous i mplementation 
 const throttleDuration = Duration(milliseconds: 100);
 
 EventTransformer<E> throttleDroppable<E>(Duration duration) {
