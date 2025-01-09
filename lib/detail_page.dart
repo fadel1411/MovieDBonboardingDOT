@@ -158,6 +158,7 @@ Future<List<Movie>> fetchmovie_detailDetail(http.Client client) async {
       .get(Uri.parse('https://api.themoviedb.org/3/trending/movie/week?api_key=$apiKey'),); 
 
     // Use the compute funtion to run fetchmovie_detail in a separate isolate
+ // docs: https://docs.flutter.dev/cookbook/networking/background-parsing
     return compute(parsemovie, response.body);
 }
 // A function that converts a response body into a List<Movie>.
